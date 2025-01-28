@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проект /canvas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #canvasSection {
+      margin-top: 20px;
+    }
+
+    #myCanvas {
+      border: 2px solid #000;
+      background-color: white;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #timeline ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #timeline li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Проект по психолого-педагогической поддержке</h1>
+    
+    <!-- Обзор программы -->
+    <section id="overview">
+      <h2>Обзор программы</h2>
+      <p>Программа предназначена для поддержки старшеклассников с ОВЗ, включая учащихся с ТНР, ЗПР, РАС и НОДА...</p>
+    </section>
+
+    <!-- Профессиональные пробы -->
+    <section id="probes">
+      <h2>Профессиональные пробы</h2>
+      <p>Выберите профессию для выполнения проб...</p>
+      <button onclick="startProbe('technical')">Технические навыки</button>
+      <button onclick="startProbe('creative')">Творческие задания</button>
+    </section>
+
+    <!-- Canvas для рисования -->
+    <section id="canvasSection">
+      <h2>Рисование и задания</h2>
+      <canvas id="myCanvas" width="600" height="400"></canvas>
+    </section>
+
+    <!-- Кнопка для очистки -->
+    <div id="controls">
+      <button onclick="clearCanvas()">Очистить холст</button>
+    </div>
+
+    <!-- Таймлайн -->
+    <section id="timeline">
+      <h2>Таймлайн реализации</h2>
+      <p>Этапы выполнения программы...</p>
+      <ul>
+        <li>Этап 1: Ознакомление с профессиями</li>
+        <li>Этап 2: Участие в пробах</li>
+        <li>Этап 3: Тренинги и мастер-классы</li>
+        <li>Этап 4: Оценка прогресса</li>
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    // Получаем ссылку на элемент canvas
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let painting = false;
+
+    // Функции для рисования
+    function startPosition(e) {
+      painting = true;
+      draw(e);
+    }
+
+    function endPosition() {
+      painting = false;
+      ctx.beginPath();
+    }
+
+    function draw(e) {
+      if (!painting) return;
+
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = 'black';
+
+      ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    }
+
+    // Слушаем события мыши
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mouseup', endPosition);
+    canvas.addEventListener('mousemove', draw);
+
+    // Очистка холста
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Выбор проб
+    function startProbe(type) {
+      if (type === 'technical') {
+        alert("Вы выбрали технические навыки для проб.");
+      } else if (type === 'creative') {
+        alert("Вы выбрали творческое задание.");
+      }
+    }
+  </script>
+</body>
+</html>
